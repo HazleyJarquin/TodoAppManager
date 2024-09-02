@@ -1,15 +1,21 @@
-import { Ionicons } from '@expo/vector-icons'
 import { useState } from 'react'
-import { TextInput, TouchableHighlight, View } from 'react-native'
+import { View } from 'react-native'
 import { styles } from './styles/styles'
 import { useTodoStore } from '@/store/useTodoStore'
-
+import { Button, Text, TextInput } from 'react-native-paper'
+import { useModalStore } from '@/store/useShowModalStore'
+import { shallow } from 'zustand/shallow'
 export const TodoInput = () => {
   const [text, setText] = useState('')
-  const { addTodo } = useTodoStore()
+  const setShowModal = useModalStore((state) => state.setShowModal, shallow)
+  const { addTodo } = useTodoStore(
+    (state) => ({ addTodo: state.addTodo }),
+    shallow
+  )
   const handlePress = () => {
-    addTodo(text)
+    addTodo({ name: text, isCompleted: false })
     setText('')
+    setShowModal(false)
   }
 
   const handleChangeText = (newText: string) => {
@@ -18,20 +24,28 @@ export const TodoInput = () => {
   return (
     <View style={styles.container}>
       <TextInput
+        mode="outlined"
         value={text}
         style={styles.input}
-        placeholder="Add Todo"
+        label={'Add Todo'}
         onSubmitEditing={handlePress}
+        activeOutlineColor="#201F1F"
+        outlineColor="#fff"
+        textColor="black"
         onChangeText={handleChangeText}
       />
-
-      <TouchableHighlight
-        style={text.trim() === '' ? styles.addButtonDisabled : styles.addButton}
-        onPress={handlePress}
-        disabled={text.trim() === ''}
-      >
-        <Ionicons name="add" size={20} color={'white'} />
-      </TouchableHighlight>
+      <View style={styles.buttonContainer}>
+        <Button
+          mode="contained"
+          style={text.trim() === '' ? styles.buttonDisabled : styles.addButton}
+          onPress={handlePress}
+          disabled={text.trim() === ''}
+        >
+          <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>
+            Add Todo
+          </Text>
+        </Button>
+      </View>
     </View>
   )
 }

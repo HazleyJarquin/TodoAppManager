@@ -10,7 +10,7 @@ export const Home = () => {
     <View style={styles.container}>
       <View style={styles.logoAndTitleContainer}>
         <Image source={logo} />
-        <Text style={styles.welcomeTitle}>Welcome to TodoAPP</Text>
+        <Text style={styles.welcomeTitle}>Welcome to TodoApp</Text>
       </View>
 
       <View style={styles.cardNavigation}>

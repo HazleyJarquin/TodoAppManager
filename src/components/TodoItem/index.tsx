@@ -1,30 +1,56 @@
 import { useTodoStore } from '@/store/useTodoStore'
-import { Ionicons } from '@expo/vector-icons'
-import { StyleSheet, Text, TouchableHighlight, View } from 'react-native'
+import { ITodos } from '@/types'
+import { StyleSheet, View } from 'react-native'
+import { Checkbox, IconButton, Text } from 'react-native-paper'
+import { shallow } from 'zustand/shallow'
+
 interface TodoItemProps {
-  todo: string
+  todo: ITodos
   index: number
 }
 
 export const TodoItem = ({ index, todo }: TodoItemProps) => {
-  const { removeTodo } = useTodoStore()
+  const { removeTodo, completeTodo } = useTodoStore(
+    (state) => ({
+      removeTodo: state.removeTodo,
+      completeTodo: state.completeTodo,
+    }),
+    shallow
+  )
   const truncateText = (text: string, maxLength: number): string => {
     if (text.length > maxLength) {
       return `${text.slice(0, maxLength)}...`
     }
     return text
   }
+
   return (
     <View style={styles.card} key={index}>
-      <Text style={{ color: '#fff', fontSize: 20 }}>
-        {truncateText(todo, 20)}
-      </Text>
-      <TouchableHighlight
-        style={styles.removeButton}
+      <View style={styles.rowCheckboxAndTitle}>
+        <Checkbox
+          uncheckedColor="#fff"
+          color="#fff"
+          status={todo.isCompleted ? 'checked' : 'unchecked'}
+          onPress={() => {
+            completeTodo(index)
+          }}
+        />
+        <Text
+          style={{
+            color: '#fff',
+            fontSize: 20,
+            textDecorationLine: todo.isCompleted ? 'line-through' : 'none',
+          }}
+        >
+          {truncateText(todo.name, 15)}
+        </Text>
+      </View>
+
+      <IconButton
+        icon={'delete'}
+        iconColor="white"
         onPress={() => removeTodo(index)}
-      >
-        <Ionicons name="trash" color={'#fff'} size={24} />
-      </TouchableHighlight>
+      />
     </View>
   )
 }
@@ -34,15 +60,25 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     marginBottom: 10,
-    backgroundColor: '#483248',
+    backgroundColor: '#201F1F',
     padding: 20,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  removeButton: {
-    backgroundColor: 'red',
-    padding: 10,
-    borderRadius: 5,
+  circleCheckbox: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  rowCheckboxAndTitle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
   },
 })

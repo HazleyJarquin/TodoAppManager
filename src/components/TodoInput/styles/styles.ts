@@ -3,28 +3,26 @@ import { StyleSheet } from 'react-native'
 export const styles = StyleSheet.create({
   container: {
     width: '100%',
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10,
-    marginTop: 20,
   },
   input: {
-    width: '80%',
-    backgroundColor: '#fff',
-    padding: 10,
-    borderRadius: 10,
+    width: '100%',
+    backgroundColor: '#0AB6AB',
   },
   addButton: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 10,
+    backgroundColor: '#201F1F',
+    padding: 3,
   },
-
-  addButtonDisabled: {
-    backgroundColor: 'gray',
-    opacity: 0.5,
-    padding: 10,
-    borderRadius: 10,
+  buttonDisabled: {
+    backgroundColor: '#201F1F',
+    opacity: 0.8,
+    padding: 3,
+  },
+  buttonContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
 })
