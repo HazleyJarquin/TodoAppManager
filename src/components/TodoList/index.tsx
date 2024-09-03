@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { FlatList, ScrollView, StyleSheet, View } from 'react-native'
 import { TodoItem } from '../TodoItem'
 import { useTodoStore } from '@/store/useTodoStore'
 import { FloatingActionButton } from '../FloatingActionButton'
@@ -38,17 +38,18 @@ export const TodoList = () => {
           </Text>
         </View>
       ) : (
-        <ScrollView
+        <FlatList
           style={{
             width: '100%',
             height: '50%',
             padding: 20,
           }}
-        >
-          {todos.map((todo, index) => (
-            <TodoItem key={index} index={index} todo={todo} />
-          ))}
-        </ScrollView>
+          data={todos}
+          keyExtractor={(_, index) => index.toString()}
+          renderItem={({ item, index }) => (
+            <TodoItem todo={item} index={index} />
+          )}
+        />
       )}
 
       <FloatingActionButton

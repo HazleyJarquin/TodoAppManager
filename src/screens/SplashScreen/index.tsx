@@ -1,13 +1,28 @@
+import { useGetAllUsers } from '@/services/getAllUsers.service'
+import { useUsersStore } from '@/store/useUsersStore'
 import { RootStackParamList } from '@/types'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
+import { useEffect } from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
+import { shallow } from 'zustand/shallow'
 
 const logo = require('../../../assets/TodoLogo.png')
 export const SplashScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>()
-  setTimeout(() => {
-    navigation.navigate('Home')
-  }, 5000)
+  const { data: UsersData } = useGetAllUsers()
+  const { setUsers } = useUsersStore(
+    (state) => ({
+      setUsers: state.setUsers,
+    }),
+    shallow
+  )
+  useEffect(() => {
+    if (UsersData?.data) {
+      setUsers(UsersData.data)
+      navigation.navigate('Users')
+    }
+  }, [UsersData, setUsers, navigation])
+
   return (
     <View style={styles.container}>
       <Image source={logo} />

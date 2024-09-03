@@ -2,6 +2,7 @@ import { RootStackParamList } from '@/types'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 import { Text, View, Image, TouchableHighlight } from 'react-native'
 import { styles } from './styles/styles'
+import { Button } from 'react-native-paper'
 
 const logo = require('../../../assets/TodoLogo.png')
 export const Home = () => {
@@ -14,12 +15,18 @@ export const Home = () => {
       </View>
 
       <View style={styles.cardNavigation}>
-        <TouchableHighlight
+        <Button
           style={styles.button}
           onPress={() => navigation.navigate('Todos')}
         >
-          <Text style={styles.buttonText}>TODOS</Text>
-        </TouchableHighlight>
+          <Text style={styles.buttonText}>Todos</Text>
+        </Button>
+        <Button
+          style={styles.button}
+          onPress={() => navigation.navigate('SplashScreen')}
+        >
+          <Text style={styles.buttonText}>Users</Text>
+        </Button>
       </View>
     </View>
   )
